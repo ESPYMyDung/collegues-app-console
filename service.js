@@ -2,27 +2,28 @@
 var request = require('request');
 
 
-function rechercherColleguesParNom(nomRecherche) //, callback)
+function rechercherColleguesParNom(nomRecherche)
 {
     var URL = "https://espy-collegues-api.herokuapp.com/collegues?nom=" + nomRecherche;
     request(URL, { json: true }, function(err, res, body)
     {
-        if (err) { return console.log('Erreur', err);}
-        //if (res) { return console.log(res);}
-        var tableauMatriculeTrouves = body;
-
-        //if (tableauMatriculeTrouves.length==0)
-
-        for (var i=0; i<tableauMatriculeTrouves.length;i++)
+        if (err) {console.log("Erreur : serveur indisponible", err);}
+        else if (res.statusCode >= 400 && res.statusCode <= 499)
+        {console.log("Erreur : le nom est inconnu", res.statusMessage);} 
+        else if (res.statusCode >= 500 && res.statusCode <= 599)
+        {console.log("Erreur : traitement requete", res.statusMessage);} 
+        else 
         {
-            rechercherColleguesParMatricule(tableauMatriculeTrouves[i], function(colleguesTrouves)
-            { 
-                console.log(colleguesTrouves.nom, colleguesTrouves.prenoms, colleguesTrouves.dateDeNaissance); 
-            } );
+            var tableauMatriculeTrouves = body;
 
+            for (var i=0; i<tableauMatriculeTrouves.length;i++)
+            {
+                rechercherColleguesParMatricule(tableauMatriculeTrouves[i], function(colleguesTrouves)
+                { 
+                    console.log(colleguesTrouves.nom, colleguesTrouves.prenoms, colleguesTrouves.dateDeNaissance); 
+                } );
+            }
         }
-
-        //callback(tableauColleguesTrouves);
     });
 }
 
@@ -31,13 +32,19 @@ function rechercherColleguesParMatricule(matriculeRecherche, callback)
     var URL = "https://espy-collegues-api.herokuapp.com/collegues/" + matriculeRecherche;
     request(URL, { json: true }, function(err, res, body)
     {
-        if (err) { return console.log('Erreur', err); }
-        var colleguesTrouves = body;
+        if (err) {console.log("Erreur : serveur indisponible", err);}
+        else if (res.statusCode >= 400 && res.statusCode <= 499)
+        {console.log("Erreur : le matricule est inconnu", res.statusMessage);} 
+        else if (res.statusCode >= 500 && res.statusCode <= 599)
+        {console.log("Erreur : traitement requete", res.statusMessage);} 
+        else 
+        {
+            var colleguesTrouves = body;
         callback(colleguesTrouves);
+        }   
     });
 }
 
 
 //export
 exports.rechercheNom = rechercherColleguesParNom;
-//exports.rechercheMatricule = rechercherColleguesParMatricule;

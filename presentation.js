@@ -22,23 +22,22 @@ var saisi = readline.createInterface(
 //fonction interaction
 var interaction = function()
 {
-
     // récupération de la saisie utilisateur
     saisi.question("Que voulez vous faire : ",function(entree)
     {
-        //console.log(`Votre choix : ${saisi}`);
         if (entree==1)
         {
-            //saisi.question("choisir un nom : ",function(chxNom){}
-            console.log(">> Recherche en cours du nom XXX");
+            saisi.question("choisir un nom : ",function(chxNom)
+            {
+                console.log(`>> Recherche en cours du nom ${chxNom}`);
 
-            cheminRecherche.rechercheNom('Potter')//, function(colleguesTrouves)
-                //{ console.log(colleguesTrouves); }   );
+                cheminRecherche.rechercheNom(chxNom);
 
-            console.log(" ");
-            start();
-            interaction();
-            console.log(" ");
+                start();
+                interaction();
+            });
+
+            
         }
         else if (entree==99)
         {
