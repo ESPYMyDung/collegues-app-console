@@ -1,6 +1,12 @@
 //require
-const readline = require('readline');
-const cheminRecherche = require("./service.js")
+/*const readline = require('readline');
+const {Service} = require("./service.ts")
+const {Collegue} = require("./domains")*/
+
+//import
+import readline from 'readline';
+import {Service} from './service';
+import {Collegue} from './domains';
 
 // fonction affichage menu
 const menu = () =>
@@ -23,22 +29,24 @@ const interaction = () =>
     // récupération de la saisie utilisateur
     saisi.question("Que voulez vous faire : ",(entree) =>
     {
-        if (entree==1)
+        if (entree=='1')
         {
-            saisi.question("choisir un nom : ",(chxNom) =>
+            saisi.question("choisir un nom : ",(chxNom: string) =>
             {
                 console.log(`>> Recherche en cours du nom ${chxNom}`);
 
-                cheminRecherche.rechercheNom(chxNom)
-                    .then(tabCols =>
+                let mesServices = new Service();
+
+                mesServices.rechercherColleguesParNom(chxNom)
+                    .then((tabCols:any) =>
                     { tabCols.forEach(
-                        pers => console.log(pers.nom, pers.prenoms, pers.dateDeNaissance));
+                        (pers:Collegue) => console.log(pers.nom, pers.prenoms, pers.dateDeNaissance));
                     } )
-                    .catch(err=> console.log('oops', err.error) )
-                    .finally( () => { menu(); interaction(); });  
+                    .catch((err:any)=> console.log('oops', err.error) )
+                    .then( () => { menu(); interaction(); });  
             });    
         }
-        else if (entree==99)
+        else if (entree=='99')
         {
             console.log("Au revoir");
             process.exit(0);
