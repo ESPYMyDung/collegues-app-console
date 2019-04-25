@@ -1,12 +1,9 @@
 //require
-var readline = require('readline');
-var cheminRecherche = require("./service.js")
-
-//gere les erreurs . sisi tres important
-
+const readline = require('readline');
+const cheminRecherche = require("./service.js")
 
 // fonction affichage menu
-var start = function()
+const menu = () =>
 {
     console.log(" ");
     console.log("1. Rechercher un collègue par nom");
@@ -15,30 +12,28 @@ var start = function()
 }
 
 // objet pour recuperer la saisi utilisateur
-var saisi = readline.createInterface( 
+const saisi = readline.createInterface( 
     { input: process.stdin, output: process.stdout }  
 );
 
 //fonction interaction
-var interaction = function()
+const interaction = () =>
 {
 
     // récupération de la saisie utilisateur
-    saisi.question("Que voulez vous faire : ",function(entree)
+    saisi.question("Que voulez vous faire : ",(entree) =>
     {
-        //console.log(`Votre choix : ${saisi}`);
         if (entree==1)
         {
-            //saisi.question("choisir un nom : ",function(chxNom){}
-            console.log(">> Recherche en cours du nom XXX");
+            saisi.question("choisir un nom : ",(chxNom) =>
+            {
+                console.log(`>> Recherche en cours du nom ${chxNom}`);
 
-            cheminRecherche.rechercheNom('Potter')//, function(colleguesTrouves)
-                //{ console.log(colleguesTrouves); }   );
+                cheminRecherche.rechercheNom('chxNom');
 
-            console.log(" ");
-            start();
-            interaction();
-            console.log(" ");
+                start();
+                interaction();
+            });
         }
         else if (entree==99)
         {
@@ -52,7 +47,7 @@ var interaction = function()
 }
 
 
-/* il a un order de lecture */
+/* il a un ordre de lecture */
 //export  
-exports.debut = start;
+exports.debut = menu;
 exports.service = interaction;
