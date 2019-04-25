@@ -29,11 +29,19 @@ const interaction = () =>
             {
                 console.log(`>> Recherche en cours du nom ${chxNom}`);
 
-                cheminRecherche.rechercheNom('chxNom');
+                cheminRecherche.rechercheNom('chxNom')
+                    .then(listepers => Promise.all(listepers)
+                        .then(mat=> cheminRecherche.rechercheMatricule(mat)
+                            .then(pers=> console.log(pers.nom, pers.prenoms, pers.dateDeNaissance))
+                            )  
+                        )
+                    .catch(err=> console.log(err) );
 
-                start();
+                    
+                menu();
                 interaction();
             });
+            
         }
         else if (entree==99)
         {
