@@ -1,6 +1,6 @@
 //require
 const readline = require('readline');
-const cheminRecherche = require("./service.js")
+const {Service} = require("./service.js")
 
 // fonction affichage menu
 const menu = () =>
@@ -29,7 +29,9 @@ const interaction = () =>
             {
                 console.log(`>> Recherche en cours du nom ${chxNom}`);
 
-                cheminRecherche.rechercheNom(chxNom)
+                let mesServices = new Service();
+
+                mesServices.rechercherColleguesParNom(chxNom)
                     .then(tabCols =>
                     { tabCols.forEach(
                         pers => console.log(pers.nom, pers.prenoms, pers.dateDeNaissance));
